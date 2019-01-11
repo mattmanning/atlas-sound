@@ -1,9 +1,11 @@
 require "sinatra"
 
-get '/' do
-  'Hello world!'
-end
+class App < Sinatra::Base
+  get '/' do
+    'Hello world!'
+  end
 
-post '/jira' do
-  puts request.inspect
+  post '/jira' do
+    puts request.inspect
+  end
 end
