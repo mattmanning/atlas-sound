@@ -6,6 +6,8 @@ class App < Sinatra::Base
   end
 
   post '/jira' do
+    payload = JSON.parse(request.body.read.to_s)
     puts request.inspect
+    puts payload.inspect
   end
 end
