@@ -16,7 +16,10 @@ class App < Sinatra::Base
     when 'jira:issue_updated'
       status = payload['issue']['fields']['status']['name']
       changelog_items = payload['changelog']['items'].map {|i| i['toString']}
-      team = payload['issue']['fields']['customfield_12012']['value']
+      team = payload['issue']['fields']['customfield_12012']
+      if team
+        issue_updated(status, changelog_items, team['value'])
+      end
     when 'sprint_started'
       sprint_started(payload['sprint']['name'])
     end
