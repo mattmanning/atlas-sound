@@ -8,6 +8,6 @@ class SoundWorker
 
   def perform(event)
     puts event.inspect
-    `omxplayer #{SOUNDS[event]}`
+    system "omxplayer #{SOUNDS[event.to_sym]}"
   end
 end
