@@ -24,8 +24,22 @@ class App < Sinatra::Base
       sprint_started(payload['sprint']['name'])
     end
   end
+
+  post '/heroku' do
+    halt 401 unless valid_signature?(request)
+
+    payload = JSON.parse(request.body.read.to_s)
+    puts request.inspect
+    puts payload.inspect
+  end
       
   private
+
+  def issue_updated(status, changelog_items, team)
+    if status == 'Done' && changelog_items.include?('Done') && team == 'Atlas'
+      SoundWorker.perform_async(:issue_done)
+    end
+  end
 
   def sprint_started(name)
     if /Atlas/.match(name)
@@ -33,9 +47,14 @@ class App < Sinatra::Base
     end
   end
 
-  def issue_updated(status, changelog_items, team)
-    if status == 'Done' && changelog_items.include?('Done') && team == 'Atlas'
-      SoundWorker.perform_async(:issue_done)
-    end
+  def valid_signature?(request)
+    calculated_hmac = Base64.encode64(OpenSSL::HMAC.digest(
+      OpenSSL::Digest.new('sha256'),
+      ENV['HEROKU_WEBHOOK_SECRET'],
+      request.raw_post
+    )).strip
+    heroku_hmac = request.headers['Heroku-Webhook-Hmac-SHA256']
+
+    heroku_hmac && Rack::Utils.secure_compare(calculated_hmac, heroku_hmac)
   end
 end
