@@ -1,3 +1,4 @@
+require 'base64'
 require 'sinatra'
 require 'sidekiq'
 require_relative 'lib/workers/sound_worker.rb'
