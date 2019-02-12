@@ -10,8 +10,6 @@ class App < Sinatra::Base
 
   post '/jira' do
     payload = JSON.parse(request.body.read.to_s)
-    puts request.inspect
-    puts payload.inspect
 
     case payload['webhookEvent']
     when 'jira:issue_updated'
@@ -27,8 +25,6 @@ class App < Sinatra::Base
   end
 
   post '/heroku' do
-    halt 401 unless valid_signature?(request)
-
     payload = JSON.parse(request.body.read.to_s)
     puts request.inspect
     puts payload.inspect
