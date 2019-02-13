@@ -28,6 +28,10 @@ class App < Sinatra::Base
     payload = JSON.parse(request.body.read.to_s)
     puts request.inspect
     puts payload.inspect
+
+    if payload['action'] == 'create'
+      SoundWorker.perform_async(:prod_push)
+    end
   end
       
   private
