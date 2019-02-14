@@ -4,7 +4,7 @@ class SoundWorker
   SOUNDS = {
     issue_done: 'oh_yeah.mp3',
     prod_push: 'push_it.mp3',
-    sprint_started: 'who_let_the_dogs_out.mp3'
+    sprint_started: 'lets_get_ready_to_rumble.mp3'
   }
 
   def perform(event)
