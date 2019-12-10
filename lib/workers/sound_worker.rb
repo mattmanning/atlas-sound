@@ -2,9 +2,9 @@ class SoundWorker
   include Sidekiq::Worker
 
   SOUNDS = {
-    issue_done: 'all_i_do_is_win.mp3',
+    issue_done: 'whoomp_there_it_is.mp3',
     prod_push: 'push_it.mp3',
-    sprint_started: 'baby_shark.mp3'
+    sprint_started: 'walk_the_dinosaur.mp3'
   }
 
   def perform(event)
